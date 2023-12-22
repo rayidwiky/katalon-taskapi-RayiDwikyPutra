@@ -21,28 +21,56 @@ import com.kms.katalon.core.testobject.ResponseObject
 import com.kms.katalon.core.testobject.ConditionType
 import groovy.json.JsonBuilder
 import groovy.json.JsonParser
+import groovy.json.JsonSlurper
+import com.kms.katalon.core.testobject.ResponseObject
+import com.kms.katalon.core.testobject.ConditionType
+import groovy.json.JsonSlurper
 
-// Membuat permintaan GET ke URL
-ResponseObject response = WS.sendRequestAndVerify(findTestObject('GET/GET_album'))
 
-// Memeriksa apakah respons memiliki status code 200 (OK)
-WS.verifyResponseStatusCode(response, 200)
+// Ambil get_album
+ResponseObject apiData = WS.sendRequest(findTestObject('GET/GET_album'))
+println(apiData.getResponseText())
 
-// Mendapatkan konten JSON dari respons
-String jsonResponseContent = response.getResponseBodyContent()
+// Cek respone status
+WS.verifyResponseStatusCode(apiData, 200)
 
-// Menggunakan JsonParser untuk mengonversi konten JSON menjadi objek
-def jsonParser = new JsonParser()
-def jsonResponse = jsonParser.parseText(jsonResponseContent)
+// Konversi API dengan slurper
+def jsonArray = new JsonSlurper().parseText(apiData.getResponseText())
+print(jsonArray)
 
-// Memeriksa apakah respons mengandung data album
-assert jsonResponse.size() > 0 : "Response should contain at least one album."
+// Data yang akan diverifikasi 10
+def expectedDataList = [
+	[userId: 1, id: 1, title: "quidem molestiae enim"],
+	[userId: 1, id: 2, title: "sunt qui excepturi placeat culpa"],
+	[userId: 1, id: 3, title: "omnis laborum odio"],
+	[userId: 1, id: 4, title: "non esse culpa molestiae omnis sed optio"],
+	[userId: 1, id: 5, title: "eaque aut omnis a"],
+	[userId: 1, id: 6, title: "natus impedit quibusdam illo est"],
+	[userId: 1, id: 7, title: "quibusdam autem aliquid et et quia"],
+	[userId: 1, id: 8, title: "qui fuga est a eum"],
+	[userId: 1, id: 9, title: "saepe unde necessitatibus rem"],
+	[userId: 1, id: 10, title: "distinctio laborum qui"],
+	[userId: 1, id: 11, title: "distinctio laborum quiz"], //cek kondisi tidak ada
+	[userId: 1, id: 19, title: "distinctio laborum quizz"], //cek kondisi tidak ada
+]
 
-// Memeriksa apakah properti tertentu dari setiap album sesuai dengan yang diharapkan
-jsonResponse.each { album ->
-	assert album.containsKey("userId") : "1"
-	assert album.containsKey("id") : "1"
-	assert album.containsKey("title") : "quidem molestiae enim"
+// Iterasi 
+expectedDataList.each { expectedData ->
+	// set dibuat false dahulu, bila tidak ada data tetap false
+	def dataFound = false
+
+	// Iterasi array
+	jsonArray.each { item ->
+		if (item.userId == expectedData.userId && item.id == expectedData.id && item.title == expectedData.title) {
+			// Set data ditemukan dan diganti true, keluar dari loop
+			dataFound = true
+			return
+		}
+	}
+	// Verifikasi 
+	if (dataFound) {
+		WS.comment("Data ditemukan di API: ${expectedData}")		
+	} else {
+		WS.comment("Data tidak ditemukan di API: ${expectedData}")		
+	}
 }
-
-
