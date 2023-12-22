@@ -1,26 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <WebServiceRequestEntity>
    <description></description>
-   <name>GET_album</name>
+   <name>POST_posts</name>
    <tag></tag>
-   <elementGuidId>bb12e1f8-fc54-4d83-ad01-6d88aea47454</elementGuidId>
+   <elementGuidId>714dcf35-d097-4b7a-a496-e38166f7081b</elementGuidId>
    <selectorMethod>BASIC</selectorMethod>
    <useRalativeImagePath>false</useRalativeImagePath>
-   <autoUpdateContent>true</autoUpdateContent>
+   <autoUpdateContent>false</autoUpdateContent>
    <connectionTimeout>0</connectionTimeout>
    <followRedirects>false</followRedirects>
    <httpBody></httpBody>
    <httpBodyContent>{
-  &quot;text&quot;: &quot;&quot;,
+  &quot;text&quot;: &quot;{\n    \&quot;title\&quot;: \&quot;foo\&quot;,\n    \&quot;body\&quot;: \&quot;bar\&quot;,\n    \&quot;userId\&quot;: 1\n  }&quot;,
   &quot;contentType&quot;: &quot;application/json&quot;,
   &quot;charset&quot;: &quot;UTF-8&quot;
 }</httpBodyContent>
    <httpBodyType>text</httpBodyType>
+   <httpHeaderProperties>
+      <isSelected>true</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>Content-Type</name>
+      <type>Main</type>
+      <value>application/json</value>
+      <webElementGuid>10c3199c-c6b0-4270-abea-db825ae07deb</webElementGuid>
+   </httpHeaderProperties>
    <katalonVersion>9.1.0</katalonVersion>
    <maxResponseSize>0</maxResponseSize>
    <migratedVersion>5.4.1</migratedVersion>
-   <restRequestMethod>GET</restRequestMethod>
-   <restUrl>https://jsonplaceholder.typicode.com/albums</restUrl>
+   <restRequestMethod>POST</restRequestMethod>
+   <restUrl>https://jsonplaceholder.typicode.com/posts</restUrl>
    <serviceType>RESTful</serviceType>
    <soapBody></soapBody>
    <soapHeader></soapHeader>
@@ -40,10 +48,7 @@ import groovy.json.JsonSlurper
 import internal.GlobalVariable as GlobalVariable
 
 RequestObject request = WSResponseManager.getInstance().getCurrentRequest()
-ResponseObject response = WSResponseManager.getInstance().getCurrentResponse()
 
-
-
-</verificationScript>
+ResponseObject response = WSResponseManager.getInstance().getCurrentResponse()</verificationScript>
    <wsdlAddress></wsdlAddress>
 </WebServiceRequestEntity>
