@@ -17,10 +17,6 @@ import com.kms.katalon.core.windows.keyword.WindowsBuiltinKeywords as Windows
 import internal.GlobalVariable as GlobalVariable
 import org.openqa.selenium.Keys as Keys
 
-def response = WS.sendRequest(findTestObject('POST/POST_posts'))
+def response = WS.sendRequest(findTestObject('DELETE/Delete_post1'))
 
-WS.verifyResponseStatusCode(response, 201)
-WS.verifyElementPropertyValue(response, 'title', 'foo')
-WS.verifyElementPropertyValue(response, 'body', 'bar')
-WS.verifyElementPropertyValue(response, 'userId', 1)
-WS.verifyElementPropertyValue(response, 'id', 101)
+WS.verifyResponseStatusCode(response, 200)
